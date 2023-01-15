@@ -19,7 +19,6 @@ public class CateringJobController {
 
     public CateringJobController(CateringJobRepository cateringJobRepository, WebClient.Builder webClientBuilder) {
         this.cateringJobRepository = cateringJobRepository;
-        client = webClientBuilder.baseUrl(IMAGE_API).build();
     }
 
     @GetMapping
@@ -54,10 +53,7 @@ public class CateringJobController {
         return null;
     }
 
-    @GetMapping("/surpriseMe")
     public Mono<String> getSurpriseImage() {
-        return client.get().uri("/api")
-                .retrieve().bodyToMono(String.class);
-
+        return null;
     }
 }
