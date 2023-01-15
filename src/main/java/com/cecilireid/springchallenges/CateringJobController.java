@@ -1,6 +1,5 @@
 package com.cecilireid.springchallenges;
 
-import org.springframework.http.HttpStatus;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +19,7 @@ public class CateringJobController {
 
     public CateringJobController(CateringJobRepository cateringJobRepository, WebClient.Builder webClientBuilder) {
         this.cateringJobRepository = cateringJobRepository;
+        client = webClientBuilder.baseUrl(IMAGE_API).build();
     }
 
     @GetMapping
@@ -54,13 +54,10 @@ public class CateringJobController {
         return null;
     }
 
+    @GetMapping("/surpriseMe")
     public Mono<String> getSurpriseImage() {
-        return null;
-    }
+        return client.get().uri("/api")
+                .retrieve().bodyToMono(String.class);
 
-    @ExceptionHandler(HttpClientErrorException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleClientException() {
-        return "Not Found: Please try again";
     }
 }
