@@ -1,5 +1,6 @@
 package com.cecilireid.springchallenges;
 
+import org.springframework.http.HttpStatus;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -8,7 +9,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -50,25 +50,17 @@ public class CateringJobController {
         return null;
     }
 
-    @PatchMapping("/{id}")
-    @ResponseBody
-    public CateringJob patchCateringJob(@PathVariable Long id, @RequestBody JsonNode json) {
-        Optional<CateringJob> optionalJob = cateringJobRepository.findById(id);
-        if (optionalJob.isPresent()) {
-            CateringJob job = optionalJob.get();
-            JsonNode menu = json.get("menu");
-            if (menu != null) {
-                job.setMenu(menu.asText());
-                return cateringJobRepository.save(job);
-            } else {
-                throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
-            }
-        } else {
-            throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
-        }
+    public CateringJob patchCateringJob(Long id, JsonNode json) {
+        return null;
     }
 
     public Mono<String> getSurpriseImage() {
         return null;
+    }
+
+    @ExceptionHandler(HttpClientErrorException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleClientException() {
+        return "Not Found: Please try again";
     }
 }
